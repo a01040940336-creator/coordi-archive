@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInfinitePosts, useTags } from '../hooks/usePosts'
 import PostCard from '../components/post/PostCard'
+import PlaceholderCard from '../components/post/PlaceholderCard'
 import { SearchFilters } from '../types'
 
 export default function SearchPage() {
@@ -220,11 +221,26 @@ export default function SearchPage() {
               ))}
             </div>
           ) : allPosts.length === 0 ? (
-            <div className="text-center py-24">
-              <p className="font-playfair text-5xl text-gray-200 font-bold">∅</p>
-              <p className="font-inter text-sm text-secondary mt-4 tracking-widest uppercase">No results found</p>
-              <p className="font-inter text-xs text-secondary/60 mt-2">Try adjusting your filters</p>
-            </div>
+            hasFilters ? (
+              <div className="text-center py-24">
+                <p className="font-playfair text-5xl text-gray-200 font-bold">∅</p>
+                <p className="font-inter text-sm text-secondary mt-4 tracking-widest uppercase">No results found</p>
+                <p className="font-inter text-xs text-secondary/60 mt-2">Try adjusting your filters</p>
+              </div>
+            ) : (
+              <div>
+                <div className="text-center pb-12">
+                  <p className="font-playfair text-5xl text-gray-200 font-bold">∅</p>
+                  <p className="font-inter text-sm text-secondary mt-4 tracking-widest uppercase">Archive is empty</p>
+                  <p className="font-inter text-xs text-secondary/50 mt-2">Upload your first look to get started</p>
+                </div>
+                <div className="opacity-25 pointer-events-none select-none grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {[...Array(6)].map((_, i) => (
+                    <PlaceholderCard key={i} index={i} />
+                  ))}
+                </div>
+              </div>
+            )
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {allPosts.map((post, i) => (

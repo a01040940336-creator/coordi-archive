@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useInfinitePosts } from '../hooks/usePosts'
 import PostCard from '../components/post/PostCard'
+import PlaceholderCard from '../components/post/PlaceholderCard'
 import { SearchFilters } from '../types'
 
 export default function ExplorePage() {
@@ -55,9 +56,24 @@ export default function ExplorePage() {
             ))}
           </div>
         ) : allPosts.length === 0 ? (
-          <div className="text-center py-32">
-            <p className="font-playfair text-6xl text-gray-200 font-bold">000</p>
-            <p className="font-inter text-sm text-secondary mt-4 tracking-widest uppercase">No looks yet</p>
+          <div>
+            <div className="text-center pb-16">
+              <p className="font-playfair text-6xl text-gray-200 font-bold">000</p>
+              <p className="font-inter text-sm text-secondary mt-4 tracking-widest uppercase">No looks archived yet</p>
+              <p className="font-inter text-xs text-secondary/50 mt-2">Be the first to upload a look</p>
+            </div>
+            <div className="opacity-25 pointer-events-none select-none">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
+                <div className="md:col-span-5"><PlaceholderCard index={0} variant="large" /></div>
+                <div className="md:col-span-4 md:mt-16"><PlaceholderCard index={1} variant="large" /></div>
+                <div className="md:col-span-3"><PlaceholderCard index={2} variant="large" /></div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                {[...Array(8)].map((_, i) => (
+                  <PlaceholderCard key={i} index={i + 3} />
+                ))}
+              </div>
+            </div>
           </div>
         ) : (
           <>
