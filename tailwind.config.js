@@ -11,8 +11,9 @@ export default {
       colors: {
         primary: '#111111',
         secondary: '#666666',
-        border: '#EAEAEA',
+        border: '#E8E8E6',
         accent: '#C9A96E',
+        canvas: '#F7F7F5',
       },
       letterSpacing: {
         widest: '0.3em',

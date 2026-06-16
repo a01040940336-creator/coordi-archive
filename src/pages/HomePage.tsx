@@ -1,274 +1,428 @@
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInfinitePosts } from '../hooks/usePosts'
 
-const FEATURE_IMG = 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&q=80'
+const FALLBACK = [
+  'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&q=80',
+  'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&q=80',
+  'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&q=80',
+  'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&q=80',
+  'https://images.unsplash.com/photo-1495385794356-15371f348c31?w=900&q=80',
+  'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=900&q=80',
+  'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=900&q=80',
+]
+
+function cover(post: any, fallback: string) {
+  return (
+    [...(post?.coordi_post_images || [])]
+      .sort((a: any, b: any) => a.sort_order - b.sort_order)[0]?.image_url || fallback
+  )
+}
+
+function FadeIn({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 export default function HomePage() {
-  const { data, isLoading } = useInfinitePosts()
-  const allPosts = data?.pages.flat() || []
+  const heroRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
 
-  const getCover = (post: any) =>
-    [...(post.coordi_post_images || [])]
-      .sort((a: any, b: any) => a.sort_order - b.sort_order)[0]?.image_url || FEATURE_IMG
+  const { data } = useInfinitePosts()
+  const posts = data?.pages.flat() || []
 
-  const thumb1 = allPosts[1] ? getCover(allPosts[1]) : 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80'
-  const thumb2 = allPosts[2] ? getCover(allPosts[2]) : 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80'
-  const thumb3 = allPosts[3] ? getCover(allPosts[3]) : 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80'
-
-  const lineup = allPosts.length > 0 ? allPosts : Array(8).fill(null)
-  const gridPosts = allPosts.slice(0, 8)
+  const p = (i: number) => posts[i] || null
+  const img = (i: number) => cover(posts[i], FALLBACK[i] || FALLBACK[0])
 
   return (
-    <main className="pt-14 min-h-screen bg-white overflow-x-hidden">
+    <main className="bg-canvas text-primary pt-12">
 
-      {/* ── MARQUEE TICKER ────────────────────────────────────── */}
-      <div className="border-b border-border overflow-hidden">
-        <motion.div
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ repeat: Infinity, duration: 18, ease: 'linear' }}
-          className="flex whitespace-nowrap"
-        >
-          {[...Array(12)].map((_, i) => (
-            <span
-              key={i}
-              className="inline-block font-inter text-[10px] tracking-[0.55em] uppercase text-secondary px-12 py-2.5 border-r border-border"
-            >
-              LOOK DISPLAY
-            </span>
-          ))}
-        </motion.div>
-      </div>
+      {/* ─────────────────────────────────────────────────────────
+          01 · HERO  — oversized typography + single image
+      ───────────────────────────────────────────────────────── */}
+      <section
+        ref={heroRef}
+        className="relative grid grid-cols-1 md:grid-cols-[52%_48%] overflow-hidden"
+        style={{ minHeight: '100vh' }}
+      >
+        {/* Left — massive type */}
+        <div className="flex flex-col justify-between px-6 md:px-12 pt-10 pb-10 md:py-16 z-10">
+          <p className="font-inter text-[9px] tracking-[0.55em] uppercase text-secondary">
+            Vol. 01 · 2026 SS
+          </p>
 
-      {/* ── HERO: 라인업 + 에디토리얼 ────────────────────────── */}
-      <section className="grid grid-cols-1 md:grid-cols-[62%_38%] border-b border-border"
-        style={{ minHeight: '72vh' }}>
-
-        {/* 좌측 — 모델 라인업 */}
-        <div className="relative flex flex-col border-r border-border overflow-hidden">
-
-          {/* LOOK DISPLAY 상단 레이블 4개 */}
-          <div className="flex justify-between px-6 py-3 border-b border-border shrink-0">
-            {['LOOK DISPLAY', 'LOOK DISPLAY', 'LOOK DISPLAY', 'LOOK DISPLAY'].map((t, i) => (
-              <span key={i} className="font-inter text-[9px] tracking-[0.4em] uppercase text-secondary">
-                {t}
-              </span>
-            ))}
-          </div>
-
-          {/* 가로 스크롤 모델 라인업 */}
-          <div className="flex-1 flex items-center px-4 overflow-x-auto gap-1 scrollbar-hide py-8">
-            {isLoading
-              ? [...Array(8)].map((_, i) => (
-                  <div key={i} className="shrink-0 w-28 h-64 bg-gray-100 animate-pulse" />
-                ))
-              : lineup.slice(0, 12).map((post, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: i * 0.06 }}
-                    className="shrink-0 group cursor-pointer"
-                  >
-                    <Link to={post ? `/post/${post.id}` : '/explore'}>
-                      <div
-                        className="overflow-hidden bg-gray-50 transition-all duration-500 group-hover:shadow-lg"
-                        style={{ width: '108px', height: '256px' }}
-                      >
-                        <img
-                          src={post ? getCover(post) : FEATURE_IMG}
-                          alt={post?.title || ''}
-                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
-          </div>
-        </div>
-
-        {/* 우측 — 에디토리얼 대형 사진 */}
-        <div className="relative overflow-hidden bg-gray-900" style={{ minHeight: '55vw' }}>
-          <img
-            src={allPosts[0] ? getCover(allPosts[0]) : FEATURE_IMG}
-            alt="Feature"
-            className="absolute inset-0 w-full h-full object-cover opacity-90"
-          />
-          {/* 어두운 오버레이 */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
-
-          {/* 브랜드명 */}
-          <div className="absolute top-8 left-6 right-6">
-            <h1
-              className="font-playfair font-black text-white leading-[0.85] uppercase"
-              style={{ fontSize: 'clamp(1.6rem, 3.2vw, 3.2rem)', letterSpacing: '-0.01em' }}
+          <div>
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="font-inter font-black uppercase text-primary leading-[0.82] tracking-tight"
+              style={{ fontSize: 'clamp(4.5rem, 12vw, 13rem)' }}
             >
               COORDI<br />ARCHIVE
-            </h1>
-          </div>
-
-          {/* 폴라로이드 썸네일 3장 */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-2.5">
-            {[thumb1, thumb2, thumb3].map((src, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 + i * 0.12 }}
-                className="bg-white p-1.5 shadow-xl"
-                style={{ width: '80px' }}
-              >
-                <div className="overflow-hidden" style={{ height: '56px' }}>
-                  <img src={src} alt="" className="w-full h-full object-cover" />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* 하단 연도 */}
-          <div className="absolute bottom-5 left-6">
-            <p className="font-inter text-[9px] tracking-[0.4em] uppercase text-white/50">
-              2026 SS Collection
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── COLLECTION: 브랜드 소개 + 룩 그리드 ──────────────── */}
-      <section className="grid grid-cols-1 md:grid-cols-[45%_55%] border-b border-border">
-
-        {/* 좌측 — 브랜드 소개 */}
-        <div className="border-r border-border flex flex-col">
-
-          {/* 상단 레이블 바 */}
-          <div className="flex justify-between px-6 py-3 border-b border-border">
-            <span className="font-inter text-[9px] tracking-[0.4em] uppercase text-secondary">LOOK DISPLAY</span>
-            <span className="font-inter text-[9px] tracking-[0.4em] uppercase text-secondary">LOOK DISPLAY</span>
-          </div>
-
-          <div className="p-8 md:p-12 flex flex-col flex-1">
-            {/* 브랜드명 */}
-            <h2
-              className="font-playfair font-black text-primary uppercase leading-[0.88] mb-6"
-              style={{ fontSize: 'clamp(2rem, 3.8vw, 4rem)' }}
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="font-inter text-xs text-secondary tracking-[0.25em] uppercase mt-6 max-w-xs leading-relaxed"
             >
-              COORDI<br />ARCHIVE
-            </h2>
-
-            {/* 설명 */}
-            <p className="font-inter text-sm text-secondary leading-relaxed max-w-xs mb-10">
-              일상 속 패션 코디를 에디토리얼 매거진 스타일로<br />
-              아카이빙하는 공간입니다. 온도, 계절, 스타일로<br />
-              탐색하는 진짜 사람들의 룩을 기록합니다.
-            </p>
-
-            {/* 에디토리얼 대형 사진 */}
-            <div className="flex-1 relative overflow-hidden mb-6" style={{ minHeight: '320px' }}>
-              <img
-                src={allPosts[4] ? getCover(allPosts[4]) : 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&q=80'}
-                alt="Editorial"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
-
-            {/* 네비게이션 링크 */}
-            <div className="flex gap-6 mb-4">
-              <Link to="/explore" className="font-inter text-xs text-secondary hover:text-primary transition-colors tracking-wider">
-                · About
-              </Link>
-              <Link to="/explore" className="font-inter text-xs text-primary tracking-wider border-b border-primary pb-px hover:text-secondary hover:border-secondary transition-colors">
-                look display
-              </Link>
-            </div>
-
-            <p className="font-inter text-[10px] tracking-[0.2em] text-secondary">
-              2026 SS Collection.
-            </p>
-          </div>
-        </div>
-
-        {/* 우측 — 룩 그리드 */}
-        <div className="flex flex-col">
-
-          {/* 상단 컬렉션 헤더 */}
-          <div className="px-8 md:px-12 py-6 border-b border-border">
-            <h3
-              className="font-playfair font-bold text-primary"
-              style={{ fontSize: 'clamp(1.1rem, 2vw, 1.6rem)', letterSpacing: '0.06em' }}
+              The archive of everyday style —<br />
+              fashion editorial, curated.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="mt-10"
             >
-              【 THE ARCHIVE 】
-            </h3>
-          </div>
-
-          <div className="p-6 md:p-8 flex-1">
-            {isLoading ? (
-              <div className="grid grid-cols-4 gap-3">
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className="aspect-[2/3] bg-gray-100 animate-pulse" />
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-4 gap-x-3 gap-y-6">
-                {(gridPosts.length > 0 ? gridPosts : Array(8).fill(null)).map((post, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.05 }}
-                  >
-                    <Link to={post ? `/post/${post.id}` : '/explore'} className="group block">
-                      {/* 룩 번호 + 서브 */}
-                      <p className="font-inter text-[9px] font-semibold tracking-[0.2em] uppercase text-primary mb-0.5">
-                        LOOK {String(i + 1).padStart(2, '0')}
-                      </p>
-                      <p className="font-inter text-[8px] tracking-wider text-secondary mb-1.5">
-                        2026 SS Collection
-                      </p>
-                      {/* 룩 이미지 */}
-                      <div className="overflow-hidden aspect-[2/3] bg-gray-50">
-                        <img
-                          src={post ? getCover(post) : FEATURE_IMG}
-                          alt={post?.title || `Look ${i + 1}`}
-                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-
-            {/* VIEW ALL 링크 */}
-            <div className="mt-8 text-center border-t border-border pt-6">
               <Link
                 to="/explore"
-                className="font-inter text-[10px] tracking-[0.4em] uppercase text-secondary hover:text-primary transition-colors"
+                className="font-inter text-[10px] tracking-[0.45em] uppercase text-primary border-b border-primary pb-px hover:text-secondary hover:border-secondary transition-colors"
               >
-                VIEW ALL LOOKS ↗
+                Enter Archive →
+              </Link>
+            </motion.div>
+          </div>
+
+          <p className="font-inter text-[9px] tracking-[0.3em] uppercase text-secondary">
+            Fashion Editorial Archive
+          </p>
+        </div>
+
+        {/* Right — full-height image with parallax */}
+        <div className="relative overflow-hidden" style={{ minHeight: '60vw' }}>
+          <motion.div style={{ y: imgY }} className="absolute inset-0 scale-110">
+            <img src={img(0)} alt="" className="img-fill" />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────
+          Ticker
+      ───────────────────────────────────────────────────────── */}
+      <div className="border-y border-border overflow-hidden py-3">
+        <div className="flex whitespace-nowrap marquee-left">
+          {[...Array(14)].map((_, i) => (
+            <span key={i} className="inline-block font-inter text-[9px] tracking-[0.5em] uppercase text-secondary px-10">
+              Coordi Archive · Fashion Editorial · 2026 ·
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────
+          02 · FEATURE LOOK — full bleed + big number
+      ───────────────────────────────────────────────────────── */}
+      <section className="grid grid-cols-1 md:grid-cols-[38%_62%]" style={{ minHeight: '85vh' }}>
+
+        {/* Left — editorial label */}
+        <div className="flex flex-col justify-between px-6 md:px-12 py-14 border-r border-border">
+          <div>
+            <p className="font-inter text-[9px] tracking-[0.5em] uppercase text-secondary mb-2">Look</p>
+            <FadeIn>
+              <span
+                className="font-inter font-black text-primary leading-none block"
+                style={{ fontSize: 'clamp(6rem, 16vw, 18rem)', lineHeight: 0.85 }}
+              >
+                01
+              </span>
+            </FadeIn>
+          </div>
+
+          <FadeIn delay={0.15}>
+            <div>
+              {p(0) && (
+                <>
+                  <p className="font-inter text-[9px] tracking-[0.4em] uppercase text-secondary mb-3">
+                    {posts[0]?.coordi_post_temperature_tags?.[0]?.coordi_temperature_tags?.label || 'Editorial'}
+                    {' · '}
+                    {posts[0]?.coordi_post_season_tags?.[0]?.coordi_season_tags?.label || '2026'}
+                  </p>
+                  <h2 className="font-playfair text-2xl md:text-3xl font-bold text-primary mb-4 leading-tight">
+                    {posts[0]?.title || 'Editorial Look'}
+                  </h2>
+                  {posts[0]?.description && (
+                    <p className="font-inter text-xs text-secondary leading-relaxed max-w-xs">
+                      {posts[0].description}
+                    </p>
+                  )}
+                </>
+              )}
+              <Link
+                to={p(0) ? `/post/${posts[0].id}` : '/explore'}
+                className="inline-block mt-6 font-inter text-[9px] tracking-[0.4em] uppercase text-primary border-b border-primary pb-px hover:text-secondary hover:border-secondary transition-colors"
+              >
+                View Look →
+              </Link>
+            </div>
+          </FadeIn>
+        </div>
+
+        {/* Right — full bleed image */}
+        <div className="relative overflow-hidden" style={{ minHeight: '65vw' }}>
+          <motion.img
+            src={img(0)}
+            alt=""
+            className="img-fill"
+            initial={{ scale: 1.05, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
+          />
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────
+          03 · STATEMENT TYPOGRAPHY — no images
+      ───────────────────────────────────────────────────────── */}
+      <section className="border-y border-border px-6 md:px-12 py-20 md:py-32">
+        <FadeIn>
+          <h2
+            className="font-inter font-black uppercase text-primary leading-[0.88] tracking-tight"
+            style={{ fontSize: 'clamp(2.8rem, 7vw, 8rem)' }}
+          >
+            Real People.<br />Real Style.
+          </h2>
+        </FadeIn>
+        <FadeIn delay={0.2}>
+          <div className="flex items-end justify-between mt-8 md:mt-12">
+            <p className="font-inter text-xs text-secondary tracking-[0.2em] max-w-xs leading-relaxed">
+              온도, 계절, 스타일로 탐색하는<br />
+              진짜 사람들의 코디를 에디토리얼로 기록합니다.
+            </p>
+            <Link
+              to="/explore"
+              className="font-inter text-[9px] tracking-[0.5em] uppercase text-secondary hover:text-primary transition-colors hidden md:block"
+            >
+              Explore All →
+            </Link>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────
+          04 · ASYMMETRIC SPREAD — looks 2 & 3
+      ───────────────────────────────────────────────────────── */}
+      <section className="grid grid-cols-1 md:grid-cols-[58%_42%] border-b border-border">
+
+        {/* Large left image */}
+        <div className="relative overflow-hidden border-r border-border" style={{ minHeight: '75vh' }}>
+          <motion.img
+            src={img(1)}
+            alt=""
+            className="img-fill"
+            initial={{ scale: 1.04, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.1, ease: 'easeOut' }}
+          />
+          {/* Caption overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="font-inter text-[9px] tracking-[0.4em] uppercase text-white/60 mb-1">Look 02</p>
+                <p className="font-inter text-sm font-medium text-white">
+                  {posts[1]?.title || 'Editorial'}
+                </p>
+              </div>
+              <Link
+                to={p(1) ? `/post/${posts[1].id}` : '/explore'}
+                className="font-inter text-[9px] tracking-[0.4em] uppercase text-white/70 hover:text-white transition-colors"
+              >
+                →
               </Link>
             </div>
           </div>
         </div>
+
+        {/* Right stack */}
+        <div className="flex flex-col">
+          {/* Top — smaller image */}
+          <div className="relative overflow-hidden flex-1" style={{ minHeight: '38vh' }}>
+            <motion.img
+              src={img(2)}
+              alt=""
+              className="img-fill"
+              initial={{ scale: 1.04, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.1, delay: 0.1, ease: 'easeOut' }}
+            />
+            <div className="absolute bottom-4 left-5">
+              <p className="font-inter text-[9px] tracking-[0.4em] uppercase text-white/60">Look 03</p>
+            </div>
+          </div>
+
+          {/* Bottom — editorial text */}
+          <div className="border-t border-border px-6 md:px-8 py-8 flex-1 flex flex-col justify-between" style={{ minHeight: '37vh' }}>
+            <p className="font-inter text-[9px] tracking-[0.5em] uppercase text-secondary">
+              2026 SS Collection
+            </p>
+            <FadeIn>
+              <h3
+                className="font-playfair font-bold text-primary italic leading-tight"
+                style={{ fontSize: 'clamp(1.6rem, 3vw, 2.8rem)' }}
+              >
+                "Autumn<br />Winter<br />Archive"
+              </h3>
+            </FadeIn>
+            <Link
+              to="/explore"
+              className="font-inter text-[9px] tracking-[0.4em] uppercase text-secondary hover:text-primary transition-colors"
+            >
+              View Archive →
+            </Link>
+          </div>
+        </div>
       </section>
 
-      {/* ── BOTTOM MARQUEE ─────────────────────────────────────── */}
-      <div className="border-t border-border overflow-hidden bg-primary py-3">
-        <motion.div
-          animate={{ x: ['-50%', '0%'] }}
-          transition={{ repeat: Infinity, duration: 22, ease: 'linear' }}
-          className="flex whitespace-nowrap"
-        >
-          {[...Array(12)].map((_, i) => (
+      {/* ─────────────────────────────────────────────────────────
+          05 · LOOK 04 — offset center composition
+      ───────────────────────────────────────────────────────── */}
+      <section className="border-b border-border py-16 md:py-24 px-6 md:px-12">
+        <div className="flex justify-between items-start mb-8">
+          <div>
+            <p className="font-inter text-[9px] tracking-[0.5em] uppercase text-secondary mb-1">Look</p>
             <span
-              key={i}
-              className="inline-block font-inter text-[9px] tracking-[0.55em] uppercase text-white/40 px-10"
+              className="font-inter font-black text-primary leading-none block"
+              style={{ fontSize: 'clamp(3rem, 8vw, 9rem)', lineHeight: 0.85 }}
             >
-              COORDI ARCHIVE · FASHION EDITORIAL ·
+              04
             </span>
+          </div>
+          {p(3) && (
+            <div className="text-right hidden md:block">
+              <p className="font-inter text-[9px] tracking-[0.4em] uppercase text-secondary mb-1">
+                {posts[3]?.coordi_post_style_tags?.[0]?.coordi_style_tags?.label || 'Style'}
+              </p>
+              <p className="font-playfair text-lg font-medium text-primary italic">
+                {posts[3]?.title}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Offset image — pushed right */}
+        <FadeIn>
+          <div className="md:ml-[25%] relative overflow-hidden" style={{ height: 'clamp(320px, 60vh, 700px)' }}>
+            <img src={img(3)} alt="" className="img-fill" />
+          </div>
+        </FadeIn>
+
+        <div className="flex justify-end mt-6">
+          <Link
+            to={p(3) ? `/post/${posts[3].id}` : '/explore'}
+            className="font-inter text-[9px] tracking-[0.4em] uppercase text-secondary hover:text-primary transition-colors"
+          >
+            View Look →
+          </Link>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────
+          06 · THREE-LOOK EDITORIAL STRIP
+      ───────────────────────────────────────────────────────── */}
+      <section className="border-b border-border">
+        <div className="px-6 md:px-12 py-8 border-b border-border">
+          <FadeIn>
+            <h2
+              className="font-inter font-black uppercase text-primary tracking-tight"
+              style={{ fontSize: 'clamp(2rem, 5vw, 6rem)', lineHeight: 0.9 }}
+            >
+              Back to<br />Basics
+            </h2>
+          </FadeIn>
+        </div>
+
+        <div className="grid grid-cols-3">
+          {[4, 5, 6].map((idx, i) => (
+            <div
+              key={idx}
+              className={`relative overflow-hidden ${i < 2 ? 'border-r border-border' : ''}`}
+              style={{ height: 'clamp(260px, 48vh, 600px)' }}
+            >
+              <motion.img
+                src={img(idx)}
+                alt=""
+                className="img-fill grayscale hover:grayscale-0 transition-all duration-700"
+                initial={{ scale: 1.06, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: i * 0.1, ease: 'easeOut' }}
+              />
+              <div className="absolute bottom-4 left-4">
+                <p className="font-inter text-[9px] tracking-[0.4em] uppercase text-white/60">
+                  Look {String(idx + 1).padStart(2, '0')}
+                </p>
+              </div>
+            </div>
           ))}
-        </motion.div>
-      </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────
+          07 · DARK STATEMENT
+      ───────────────────────────────────────────────────────── */}
+      <section className="bg-primary px-6 md:px-12 py-20 md:py-28">
+        <FadeIn>
+          <p className="font-inter text-[9px] tracking-[0.55em] uppercase text-white/30 mb-8">
+            Editorial Concept
+          </p>
+          <h2
+            className="font-inter font-black uppercase text-white leading-[0.85] tracking-tight"
+            style={{ fontSize: 'clamp(3rem, 8vw, 10rem)' }}
+          >
+            Curated.<br />Archived.<br />Worn.
+          </h2>
+        </FadeIn>
+        <FadeIn delay={0.25}>
+          <div className="flex items-end justify-between mt-12 md:mt-16 border-t border-white/10 pt-8">
+            <p className="font-inter text-xs text-white/40 tracking-[0.2em] max-w-sm leading-relaxed">
+              패션 매거진의 경험을 일상으로. 온도, 계절, 스타일로 탐색하는 진짜 사람들의 코디를 에디토리얼 아카이브로 기록합니다.
+            </p>
+            <Link
+              to="/explore"
+              className="font-inter text-[9px] tracking-[0.45em] uppercase text-white/50 hover:text-white transition-colors hidden md:block"
+            >
+              Enter Archive →
+            </Link>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────
+          08 · ARCHIVE CTA — typographic
+      ───────────────────────────────────────────────────────── */}
+      <section className="px-6 md:px-12 py-24 md:py-36 border-b border-border">
+        <FadeIn>
+          <Link to="/explore" className="group block">
+            <h2
+              className="font-inter font-black uppercase text-primary tracking-tight leading-[0.85] group-hover:text-secondary transition-colors duration-500"
+              style={{ fontSize: 'clamp(3.5rem, 9vw, 11rem)' }}
+            >
+              Explore<br />the Full<br />Archive
+            </h2>
+            <div className="flex items-center gap-4 mt-8">
+              <span className="block w-12 h-px bg-primary group-hover:w-20 transition-all duration-500" />
+              <span className="font-inter text-[9px] tracking-[0.5em] uppercase text-secondary group-hover:text-primary transition-colors">
+                View All Looks
+              </span>
+            </div>
+          </Link>
+        </FadeIn>
+      </section>
 
     </main>
   )
