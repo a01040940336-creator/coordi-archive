@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coordi Archive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../CSS/style.css" />
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo">COORDI ARCHIVE</a>
+      <nav class="nav">
+        <a href="#explore" class="nav-link active">Explore</a>
+        <a href="#search" class="nav-link">Search</a>
+        <a href="#" class="nav-link">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── EXPLORE HERO ── -->
+  <section class="hero" id="explore">
+    <div class="hero-inner">
+      <p class="label">The Archive</p>
+      <h1 class="hero-title">Explore</h1>
+      <p class="hero-count">12 looks archived</p>
+    </div>
+  </section>
+
+  <!-- ── ASYMMETRIC FIRST ROW ── -->
+  <section class="grid-section">
+    <div class="grid-asymmetric">
+
+      <!-- Card A — Large (col-span 5) -->
+      <div class="card card-large" style="--delay: 0s">
+        <a href="#post-001" class="card-link">
+          <div class="card-img-wrap aspect-34">
+            <img
+              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80"
+              alt="여름 장마철 도트스커트 룩"
+              class="card-img"
+            />
+            <div class="card-overlay">
+              <p class="card-overlay-tag">Warm · Summer</p>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-info-top">
+              <div>
+                <p class="card-num">No.001</p>
+                <h3 class="card-title-lg">여름 장마철 도트스커트 룩</h3>
+              </div>
+              <span class="card-style-badge">Feminine</span>
+            </div>
+            <p class="card-author">by 민정</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Card B — Large with offset (col-span 4, mt-16) -->
+      <div class="card card-large card-offset" style="--delay: 0.1s">
+        <a href="#post-002" class="card-link">
+          <div class="card-img-wrap aspect-34">
+            <img
+              src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80"
+              alt="카페 데이트 니트 코디"
+              class="card-img"
+            />
+            <div class="card-overlay">
+              <p class="card-overlay-tag">Mild · Autumn</p>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-info-top">
+              <div>
+                <p class="card-num">No.002</p>
+                <h3 class="card-title-lg">카페 데이트 니트 코디</h3>
+              </div>
+              <span class="card-style-badge">Classic</span>
+            </div>
+            <p class="card-author">by Seoul Look</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Card C — Large (col-span 3) -->
+      <div class="card card-large" style="--delay: 0.2s">
+        <a href="#post-003" class="card-link">
+          <div class="card-img-wrap aspect-34">
+            <img
+              src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80"
+              alt="출근룩 슬랙스 스타일링"
+              class="card-img"
+            />
+            <div class="card-overlay">
+              <p class="card-overlay-tag">Cool · Spring</p>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-info-top">
+              <div>
+                <p class="card-num">No.003</p>
+                <h3 class="card-title-lg">출근룩 슬랙스 스타일링</h3>
+              </div>
+              <span class="card-style-badge">Minimal</span>
+            </div>
+            <p class="card-author">by Archive Editor</p>
+          </div>
+        </a>
+      </div>
+
+    </div><!-- /.grid-asymmetric -->
+
+    <!-- ── REGULAR 4-COLUMN GRID ── -->
+    <div class="grid-regular">
+
+      <div class="card" style="--delay: 0.1s">
+        <a href="#post-004" class="card-link">
+          <div class="card-img-wrap aspect-23">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80" alt="봄 로퍼 공항패션" class="card-img" />
+          </div>
+          <div class="card-meta">
+            <p class="card-num-sm">No.004 · Mild</p>
+            <h3 class="card-title">봄 로퍼 공항패션</h3>
+            <div class="card-tags">
+              <span class="tag">Spring</span>
+              <span class="tag">Classic</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="card" style="--delay: 0.18s">
+        <a href="#post-005" class="card-link">
+          <div class="card-img-wrap aspect-23">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="한여름 샌들 여행룩" class="card-img" />
+          </div>
+          <div class="card-meta">
+            <p class="card-num-sm">No.005 · Hot</p>
+            <h3 class="card-title">한여름 샌들 여행룩</h3>
+            <div class="card-tags">
+              <span class="tag">Summer</span>
+              <span class="tag">Casual</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="card" style="--delay: 0.26s">
+        <a href="#post-006" class="card-link">
+          <div class="card-img-wrap aspect-23">
+            <img src="https://images.unsplash.com/photo-1495385794356-15371f348c31?w=600&q=80" alt="겨울 롱부츠 데이트룩" class="card-img" />
+          </div>
+          <div class="card-meta">
+            <p class="card-num-sm">No.006 · Cold</p>
+            <h3 class="card-title">겨울 롱부츠 데이트룩</h3>
+            <div class="card-tags">
+              <span class="tag">Winter</span>
+              <span class="tag">Feminine</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="card" style="--delay: 0.34s">
+        <a href="#post-007" class="card-link">
+          <div class="card-img-wrap aspect-23">
+            <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80" alt="초가을 가디건 카페룩" class="card-img" />
+          </div>
+          <div class="card-meta">
+            <p class="card-num-sm">No.007 · Cool</p>
+            <h3 class="card-title">초가을 가디건 카페룩</h3>
+            <div class="card-tags">
+              <span class="tag">Autumn</span>
+              <span class="tag">Casual</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="card" style="--delay: 0.42s">
+        <a href="#post-008" class="card-link">
+          <div class="card-img-wrap aspect-23">
+            <img src="https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?w=600&q=80" alt="장마철 청바지 편안한 룩" class="card-img" />
+          </div>
+          <div class="card-meta">
+            <p class="card-num-sm">No.008 · Warm</p>
+            <h3 class="card-title">장마철 청바지 편안한 룩</h3>
+            <div class="card-tags">
+              <span class="tag">Summer</span>
+              <span class="tag">Minimal</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="card" style="--delay: 0.5s">
+        <a href="#post-009" class="card-link">
+          <div class="card-img-wrap aspect-23">
+            <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" alt="여름 반팔티 하객룩" class="card-img" />
+          </div>
+          <div class="card-meta">
+            <p class="card-num-sm">No.009 · Hot</p>
+            <h3 class="card-title">여름 반팔티 하객룩</h3>
+            <div class="card-tags">
+              <span class="tag">Summer</span>
+              <span class="tag">Elegant</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="card" style="--delay: 0.58s">
+        <a href="#post-010" class="card-link">
+          <div class="card-img-wrap aspect-23">
+            <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=600&q=80" alt="늦가을 니트 출근룩" class="card-img" />
+          </div>
+          <div class="card-meta">
+            <p class="card-num-sm">No.010 · Cool</p>
+            <h3 class="card-title">늦가을 니트 출근룩</h3>
+            <div class="card-tags">
+              <span class="tag">Autumn</span>
+              <span class="tag">Classic</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="card" style="--delay: 0.66s">
+        <a href="#post-011" class="card-link">
+          <div class="card-img-wrap aspect-23">
+            <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80" alt="봄 원피스 소풍룩" class="card-img" />
+          </div>
+          <div class="card-meta">
+            <p class="card-num-sm">No.011 · Warm</p>
+            <h3 class="card-title">봄 원피스 소풍룩</h3>
+            <div class="card-tags">
+              <span class="tag">Spring</span>
+              <span class="tag">Romantic</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="card" style="--delay: 0.74s">
+        <a href="#post-012" class="card-link">
+          <div class="card-img-wrap aspect-23">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e0?w=600&q=80" alt="겨울 코트 시티룩" class="card-img" />
+          </div>
+          <div class="card-meta">
+            <p class="card-num-sm">No.012 · Cold</p>
+            <h3 class="card-title">겨울 코트 시티룩</h3>
+            <div class="card-tags">
+              <span class="tag">Winter</span>
+              <span class="tag">Minimal</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div><!-- /.grid-regular -->
+  </section>
+
+  <!-- ── POST DETAIL (04.jpg 스타일 아이템 브레이크다운) ── -->
+  <section class="detail-section" id="post-001">
+    <div class="detail-inner">
+
+      <!-- 에디토리얼 히어로 -->
+      <div class="detail-hero">
+        <div class="detail-bg-num">001</div>
+        <div class="detail-hero-grid">
+
+          <!-- 좌측 타이틀 -->
+          <div class="detail-left">
+            <p class="label">Coordi Archive — No.001</p>
+            <h2 class="detail-title">여름 장마철<br>도트스커트 룩</h2>
+            <p class="detail-desc">장마철에도 스타일리시하게. 도트 패턴 스커트와 심플한 반팔티의 조합으로 완성한 여름 룩.</p>
+            <div class="detail-actions">
+              <button class="btn-like" id="likeBtn">♡ <span id="likeCount">12</span></button>
+              <button class="btn-save" id="saveBtn">□ Save</button>
+            </div>
+            <div class="detail-meta">
+              <p class="detail-author">by 민정</p>
+              <div class="detail-tag-row">
+                <span class="tag">Warm</span>
+                <span class="tag">Summer</span>
+                <span class="tag">Feminine</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 우측 메인 이미지 -->
+          <div class="detail-right">
+            <img
+              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80"
+              alt="여름 장마철 도트스커트 룩"
+              class="detail-main-img"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- 04.jpg 스타일 아이템 브레이크다운 -->
+      <div class="breakdown">
+        <div class="breakdown-header">
+          <p class="label">No.001 — "여름 장마철 도트스커트 룩"</p>
+          <div class="breakdown-stars">✦ ✦ ✦</div>
+        </div>
+
+        <div class="breakdown-grid">
+          <!-- 좌측: A, B 아이템 -->
+          <div class="breakdown-items">
+
+            <div class="item-row">
+              <span class="item-letter">A</span>
+              <div class="item-img-box">
+                <img
+                  src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80"
+                  alt="반팔티"
+                  class="item-img"
+                />
+              </div>
+              <div class="item-info">
+                <p class="item-category">상의</p>
+                <p class="item-name">반팔티</p>
+              </div>
+            </div>
+
+            <div class="item-row">
+              <span class="item-letter">B</span>
+              <div class="item-img-box">
+                <img
+                  src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80"
+                  alt="도트 스커트"
+                  class="item-img"
+                />
+              </div>
+              <div class="item-info">
+                <p class="item-category">하의</p>
+                <p class="item-name">도트 스커트</p>
+              </div>
+            </div>
+
+          </div><!-- /.breakdown-items -->
+
+          <!-- 우측: 착장 사진 + 뱃지 -->
+          <div class="breakdown-outfit">
+            <div class="outfit-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80"
+                alt="착장 사진"
+                class="outfit-img"
+              />
+              <span class="outfit-badge" style="top: 14%; right: 22%">A</span>
+              <span class="outfit-badge" style="top: 55%; left: 12%">B</span>
+            </div>
+          </div>
+
+        </div><!-- /.breakdown-grid -->
+      </div><!-- /.breakdown -->
+
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <p class="footer-text">© 2025 Coordi Archive — Fashion Editorial Archive</p>
+  </footer>
+
+  <script src="../JS/main.js"></script>
+</body>
+</html>
