@@ -6,7 +6,7 @@ export default {
       fontFamily: {
         playfair: ['"Playfair Display"', 'Georgia', 'serif'],
         bodoni: ['"Bodoni Moda"', 'Georgia', 'serif'],
-        inter: ['Inter', 'sans-serif'],
+        inter: ['Pretendard Variable', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
       colors: {
         primary: '#111111',
