@@ -19,12 +19,12 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-canvas border-b border-border">
-      <div className="px-6 md:px-10 h-12 flex items-center justify-between">
+      <div className="px-6 md:px-10 h-14 flex items-center justify-between">
 
         {/* Logo */}
         <Link
           to="/"
-          className="font-inter text-[10px] font-semibold tracking-[0.55em] uppercase text-primary"
+          className="font-inter text-xs font-semibold tracking-[0.15em] uppercase text-primary"
         >
           C.A.
         </Link>
@@ -38,7 +38,7 @@ export default function Header() {
             <Link
               key={to}
               to={to}
-              className={`font-inter text-[10px] tracking-[0.38em] uppercase transition-colors ${
+              className={`font-inter text-xs font-medium tracking-[0.08em] uppercase transition-colors ${
                 isActive(to) ? 'text-primary' : 'text-secondary hover:text-primary'
               }`}
             >
@@ -48,7 +48,7 @@ export default function Header() {
           {user && (
             <Link
               to="/create"
-              className={`font-inter text-[10px] tracking-[0.38em] uppercase transition-colors ${
+              className={`font-inter text-xs font-medium tracking-[0.08em] uppercase transition-colors ${
                 isActive('/create') ? 'text-primary' : 'text-secondary hover:text-primary'
               }`}
             >
@@ -63,7 +63,7 @@ export default function Header() {
             <div className="relative hidden md:block">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="font-inter text-[10px] tracking-[0.38em] uppercase text-secondary hover:text-primary transition-colors"
+                className="font-inter text-xs font-medium tracking-[0.06em] uppercase text-secondary hover:text-primary transition-colors"
               >
                 {profile?.display_name || profile?.username || 'Account'}
               </button>
@@ -74,7 +74,7 @@ export default function Header() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-7 w-36 bg-canvas border border-border z-50"
+                    className="absolute right-0 top-8 w-40 bg-canvas border border-border z-50 shadow-sm"
                   >
                     {[
                       { to: `/profile/${profile?.username}`, label: 'Profile' },
@@ -84,14 +84,14 @@ export default function Header() {
                         key={to}
                         to={to}
                         onClick={() => setMenuOpen(false)}
-                        className="block px-4 py-3 font-inter text-[10px] tracking-[0.2em] uppercase text-secondary hover:text-primary transition-colors"
+                        className="block px-4 py-3 font-inter text-xs font-medium tracking-[0.04em] uppercase text-secondary hover:text-primary transition-colors"
                       >
                         {label}
                       </Link>
                     ))}
                     <button
                       onClick={handleSignOut}
-                      className="w-full text-left px-4 py-3 font-inter text-[10px] tracking-[0.2em] uppercase text-secondary hover:text-primary transition-colors border-t border-border"
+                      className="w-full text-left px-4 py-3 font-inter text-xs font-medium tracking-[0.04em] uppercase text-secondary hover:text-primary transition-colors border-t border-border"
                     >
                       Sign Out
                     </button>
@@ -102,7 +102,7 @@ export default function Header() {
           ) : (
             <Link
               to="/login"
-              className="hidden md:block font-inter text-[10px] tracking-[0.38em] uppercase text-secondary hover:text-primary transition-colors"
+              className="hidden md:block font-inter text-xs font-medium tracking-[0.08em] uppercase text-secondary hover:text-primary transition-colors"
             >
               Sign In
             </Link>
@@ -143,7 +143,7 @@ export default function Header() {
                   key={to}
                   to={to}
                   onClick={() => setMenuOpen(false)}
-                  className="font-inter text-[10px] tracking-[0.38em] uppercase text-secondary hover:text-primary transition-colors"
+                  className="font-inter text-sm font-medium tracking-[0.06em] uppercase text-secondary hover:text-primary transition-colors"
                 >
                   {label}
                 </Link>
@@ -151,7 +151,7 @@ export default function Header() {
               {user && (
                 <button
                   onClick={handleSignOut}
-                  className="text-left font-inter text-[10px] tracking-[0.38em] uppercase text-secondary border-t border-border pt-5"
+                  className="text-left font-inter text-sm font-medium tracking-[0.06em] uppercase text-secondary border-t border-border pt-5"
                 >
                   Sign Out
                 </button>

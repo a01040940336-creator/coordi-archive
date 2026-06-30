@@ -4,14 +4,14 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        playfair: ['"Playfair Display"', 'Georgia', 'serif'],
-        bodoni: ['"Bodoni Moda"', 'Georgia', 'serif'],
-        inter: ['Pretendard Variable', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        inter: ['Inter', 'Noto Sans KR', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        playfair: ['Inter', 'Noto Sans KR', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        bodoni: ['Inter', 'Noto Sans KR', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
       },
       colors: {
         primary: '#111111',
-        secondary: '#666666',
-        border: '#E8E8E6',
+        secondary: '#555555',
+        border: '#E0E0DE',
         accent: '#C9A96E',
         canvas: '#F7F7F5',
       },
